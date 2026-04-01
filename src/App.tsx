@@ -224,9 +224,9 @@ const productCards = [
 const partnershipCards = [
   {
     title: "Site Profissional",
-    oldPrice: "de R$ 1.669,00",
-    installmentPrefix: "a partir de 3x de",
-    installmentPrice: "R$ 333,30",
+    oldPrice: "",
+    installmentPrefix: "a partir de",
+    installmentPrice: "R$ 49,90 / mês",
     cta: "Quero preço baixo",
     benefits: [
       "Entrega em 3 dias úteis",
@@ -240,9 +240,9 @@ const partnershipCards = [
   },
   {
     title: "Site Personalizado",
-    oldPrice: "de R$ 5.999,00",
-    installmentPrefix: "por 3x de",
-    installmentPrice: "R$ 1.200,00",
+    oldPrice: "",
+    installmentPrefix: "a partir de",
+    installmentPrice: "R$ 69,90 / mês (com painel)",
     cta: "Quero preço baixo",
     benefits: [
       "Layout exclusivo sob medida",
@@ -256,9 +256,9 @@ const partnershipCards = [
   },
   {
     title: "Loja Virtual",
-    oldPrice: "de R$ 1.659,00",
-    installmentPrefix: "a partir de 3x de",
-    installmentPrice: "R$ 332,00",
+    oldPrice: "",
+    installmentPrefix: "a partir de",
+    installmentPrice: "R$ 120,00 / mês",
     cta: "Quero preço baixo",
     benefits: [
       "Entrega em 3 dias úteis",
@@ -270,6 +270,40 @@ const partnershipCards = [
       "Formas de pagamento integradas",
       "Controle de estoque automatizado",
       "Alta performance e segurança",
+    ],
+  },
+  {
+    title: "Sistemas Inteligentes",
+    oldPrice: "",
+    installmentPrefix: "a combinar",
+    installmentPrice: "Projeto sob Medida",
+    cta: "Consultar projeto",
+    benefits: [
+      "ERP Empresarial e PDV Completos",
+      "Sistemas para Advocacia e Clínicas",
+      "Gestão de Estoque e OS Premium",
+      "Aplicativos de Ponto e RH",
+      "Dashboards Analíticos Avançados",
+      "Automação e Bots no WhatsApp",
+      "Tecnologia Nuvem Escalável",
+      "Alta Performance e Arquitetura Limpa",
+    ],
+  },
+  {
+    title: "Aplicativos Mobile",
+    oldPrice: "",
+    installmentPrefix: "a combinar",
+    installmentPrice: "Projeto sob Medida",
+    cta: "Consultar app",
+    benefits: [
+      "Lançamento em Android e iOS",
+      "Notificações Push ilimitadas",
+      "Funcionalidades nativas (câmera, GPS)",
+      "Recursos Offline e Sincronização",
+      "Painel administrativo Web integrado",
+      "Login Social (Google, Apple, Facebook)",
+      "Design focado na Experiência do Usuário (UX)",
+      "Publicação e aprovação nas Lojas",
     ],
   },
 ];
@@ -514,8 +548,10 @@ function App() {
               <div className="plans-story-head">
                 <Badge className="section-badge">Parceria Estratégica</Badge>
                 <h2>
-                  Criação de <span className="text-gradient">Sites Profissionais</span> e{" "}
-                  <span className="text-gradient">Lojas Virtuais</span>
+                  Criação de <span className="text-gradient">Sites</span>,{" "}
+                  <span className="text-gradient">Lojas</span>,{" "}
+                  <span className="text-gradient">Sistemas</span> e{" "}
+                  <span className="text-gradient">Apps</span>
                 </h2>
                 <p>Role para ver cada plano entrar com transição suave.</p>
               </div>
@@ -528,7 +564,7 @@ function App() {
                         <h3 className="plan-name">{card.title}</h3>
 
                         <div className="plan-offer">
-                          <p className="plan-old">{card.oldPrice}</p>
+                          {card.oldPrice && <p className="plan-old">{card.oldPrice}</p>}
                           <p className="plan-installment-label">{card.installmentPrefix}</p>
                           <p className="plan-installment-price">{card.installmentPrice}</p>
                           <a href="https://wa.me/5517999783012?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20planos%21" target="_blank" rel="noopener noreferrer" className="block mt-4">
