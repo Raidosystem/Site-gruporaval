@@ -229,7 +229,6 @@ const partnershipCards = [
     installmentPrice: "R$ 49,90 / mês",
     cta: "Quero preço baixo",
     benefits: [
-      "Entrega em 3 dias úteis",
       "Criação de conteúdo",
       "Site seguro (SSL e HTTPS)",
       "SEO Completo",
@@ -261,7 +260,6 @@ const partnershipCards = [
     installmentPrice: "R$ 120,00 / mês",
     cta: "Quero preço baixo",
     benefits: [
-      "Entrega em 3 dias úteis",
       "Loja virtual responsiva",
       "Vários layouts para você escolher",
       "2 a 20 Contas de E-mail Profissional GRÁTIS",
