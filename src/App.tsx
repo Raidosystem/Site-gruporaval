@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   Code,
   ShareNetwork,
@@ -8,7 +8,6 @@ import {
   IdentificationCard,
   Signpost,
   Envelope,
-  Phone,
   MapPin,
   MagnifyingGlass,
   FileText,
@@ -17,29 +16,25 @@ import {
   ArrowRight,
   CheckCircle,
   Sparkle,
+  InstagramLogo,
+  WhatsappLogo,
+  Desktop,
+  Scales,
+  Bank,
+  Clock,
+  Wrench,
+  Globe,
 } from "@phosphor-icons/react";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Toaster } from "@/components/ui/sonner";
 
 import videoCard from "@/assets/videos/videocard.mp4";
 import videoPlayback from "@/assets/videos/videoplayback.mp4";
 
-interface FormData {
-  nome: string;
-  email: string;
-  telefone: string;
-  empresa: string;
-  mensagem: string;
-}
 
 const navItems = [
   { id: "inicio", label: "Início" },
@@ -77,34 +72,119 @@ const softwareCards = [
   },
 ];
 
-const projects = [
+const systemProjects = [
   {
     title: "Busca CEP",
-    href: "https://buscacep.gruporaval.com",
+    href: "https://buscacep.aquiguaira.com.br",
     icon: MagnifyingGlass,
     badge: "Utilitário",
     text: "Busca rápida de CEPs de Guaíra - SP com interface objetiva.",
   },
   {
     title: "Gerador de Currículos",
-    href: "https://curriculo.gruporaval.com",
+    href: "https://criarcurriculo.aquiguaira.com.br/",
     icon: FileText,
     badge: "Produtividade",
     text: "Criação de currículos profissionais de forma gratuita e prática.",
   },
   {
     title: "Aqui Guaíra",
-    href: "https://aquiguaira.gruporaval.com",
+    href: "https://aquiguaira.com.br",
     icon: Storefront,
     badge: "Comércio Local",
     text: "Descoberta de lojas e serviços locais por região.",
   },
   {
     title: "MarketGuaíra",
-    href: "https://marketgauira.gruporaval.com",
+    href: "https://aquiguaira.com.br/marketplace",
     icon: ShoppingCart,
     badge: "Marketplace",
     text: "Ecossistema digital para conectar negócios e consumidores.",
+  },
+  {
+    title: "PDV com Integração ML",
+    href: "https://www.gestao365pro.com.br/",
+    icon: Desktop,
+    badge: "Gestão / ERP",
+    text: "Sistema completo de PDV integrado ao Mercado Livre.",
+  },
+  {
+    title: "Sistema para Advogados",
+    href: "https://advpro.gruporaval.com.br/",
+    icon: Scales,
+    badge: "Jurídico",
+    text: "Plataforma completa para gestão de escritórios de advocacia.",
+  },
+  {
+    title: "Ponto Fácil",
+    href: "https://pontofacil.gruporaval.com.br",
+    icon: Clock,
+    badge: "Gestão de RH",
+    text: "Sistema digital para controle de ponto inteligente e prático.",
+  },
+  {
+    title: "OS Premium",
+    href: "https://ospremium.gruporaval.com.br/",
+    icon: Wrench,
+    badge: "Serviços",
+    text: "Gerenciamento completo de ordens de serviço e atendimentos.",
+  },
+];
+
+const websiteProjects = [
+  {
+    title: "Anita Enxovais",
+    href: "https://anitaenxovais.gruporaval.com.br/",
+    badge: "E-commerce",
+    text: "Loja virtual de cama, mesa e banho.",
+  },
+  {
+    title: "Grupo RaVal",
+    href: "https://www.gruporaval.com.br/",
+    badge: "Institucional",
+    text: "Agência com portfólio e serviços.",
+  },
+  {
+    title: "Assistência All Import",
+    href: "https://www.assistenciaallimport.com.br/",
+    badge: "Empresarial",
+    text: "Assistência técnica especializada.",
+  },
+  {
+    title: "Camilo Garcia",
+    href: "https://camilo.gruporaval.com.br/",
+    badge: "Profissional",
+    text: "Clínica de psicologia e agendamentos.",
+  },
+  {
+    title: "Denir Ferreira",
+    href: "https://denirferreira.gruporaval.com.br/",
+    badge: "Profissional",
+    text: "Marca pessoal e serviços.",
+  },
+  {
+    title: "Mariângela Barrachi",
+    href: "https://mariangelabarrachi.gruporaval.com.br/",
+    badge: "Profissional",
+    text: "Apresentação de serviços e contato.",
+  },
+  {
+    title: "TecCell Premium",
+    href: "https://www.teccellpremium.com.br/",
+    badge: "Empresarial",
+    text: "Loja e assistência de smartphones.",
+  },
+  {
+    title: "CT Mateus Pavanello",
+    href: "https://www.ctmateuspavanello.com.br/",
+    badge: "Esportes / Saúde",
+    text: "Centro de treinamento com planos.",
+  },
+  {
+    title: "Loja Maçônica Acácia Guairense",
+    href: "https://maconaria.gruporaval.com.br",
+    badge: "Institucional",
+    text: "Portal de comunicação da Loja.",
   },
 ];
 
@@ -195,13 +275,6 @@ const partnershipCards = [
 ];
 
 function App() {
-  const [formData, setFormData] = useState<FormData>({
-    nome: "",
-    email: "",
-    telefone: "",
-    empresa: "",
-    mensagem: "",
-  });
 
   useEffect(() => {
     const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
@@ -266,28 +339,6 @@ function App() {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!formData.nome || !formData.email || !formData.mensagem) {
-      toast.error("Preencha nome, e-mail e mensagem para continuar.");
-      return;
-    }
-
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
-    if (!emailOk) {
-      toast.error("Digite um e-mail válido.");
-      return;
-    }
-
-    toast.success("Mensagem enviada com sucesso. Retornaremos em breve.");
-    setFormData({ nome: "", email: "", telefone: "", empresa: "", mensagem: "" });
-  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -349,10 +400,12 @@ function App() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button className="group rounded-full px-7" size="lg" onClick={() => scrollToSection("contato")}>
-                  Solicitar orçamento
-                  <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-                </Button>
+                <a href="https://wa.me/5517999783012?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%21" target="_blank" rel="noopener noreferrer">
+                  <Button className="group rounded-full px-7" size="lg">
+                    Solicitar orçamento
+                    <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                </a>
                 <Button variant="outline" className="rounded-full px-7" size="lg" onClick={() => scrollToSection("projetos")}>
                   Ver projetos
                 </Button>
@@ -478,10 +531,12 @@ function App() {
                           <p className="plan-old">{card.oldPrice}</p>
                           <p className="plan-installment-label">{card.installmentPrefix}</p>
                           <p className="plan-installment-price">{card.installmentPrice}</p>
-                          <Button className="mt-4 rounded-full px-6">
-                            {card.cta}
-                            <ArrowRight className="ml-2" size={16} />
-                          </Button>
+                          <a href="https://wa.me/5517999783012?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20planos%21" target="_blank" rel="noopener noreferrer" className="block mt-4">
+                            <Button className="w-full rounded-full px-6">
+                              {card.cta}
+                              <ArrowRight className="ml-2" size={16} />
+                            </Button>
+                          </a>
                         </div>
 
                         <h4 className="plan-benefits-title">Benefícios</h4>
@@ -577,28 +632,74 @@ function App() {
             <p>Produtos reais que geram impacto local e digital para a comunidade e empresas.</p>
           </div>
 
-          <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 md:px-6 lg:grid-cols-4">
-            {projects.map((project, index) => {
-              const Icon = project.icon;
-              return (
-                <a key={project.title} href={project.href} target="_blank" rel="noopener noreferrer" className="block">
-                  <Card className="service-card reveal h-full" data-reveal data-delay={String(index * 120)}>
-                    <CardHeader>
-                      <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/15 text-violet-600 dark:text-violet-300">
-                        <Icon size={24} />
-                      </div>
-                      <CardTitle className="text-xl">{project.title}</CardTitle>
-                      <CardDescription>{project.text}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Badge variant="secondary" className="rounded-full">
-                        {project.badge}
-                      </Badge>
-                    </CardContent>
-                  </Card>
+          {/* Sistemas */}
+          <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
+            <div className="reveal mb-6 flex items-center gap-3" data-reveal>
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-500">
+                <Code size={18} />
+              </div>
+              <h3 className="text-lg font-semibold">Sistemas & Plataformas</h3>
+              <Badge variant="secondary" className="rounded-full text-xs">{systemProjects.length}</Badge>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+              {systemProjects.map((project, index) => {
+                const Icon = project.icon;
+                return (
+                  <a key={project.title} href={project.href} target="_blank" rel="noopener noreferrer" className="group block">
+                    <Card className="service-card reveal h-full transition-all duration-300 group-hover:border-cyan-500/30 group-hover:shadow-lg group-hover:shadow-cyan-500/5" data-reveal data-delay={String(index * 80)}>
+                      <CardHeader className="pb-3">
+                        <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/15 to-blue-500/15 text-cyan-600 dark:text-cyan-300 transition-transform duration-300 group-hover:scale-110">
+                          <Icon size={22} />
+                        </div>
+                        <CardTitle className="text-base">{project.title}</CardTitle>
+                        <CardDescription className="text-xs leading-relaxed">{project.text}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <Badge variant="secondary" className="rounded-full text-[11px]">
+                          {project.badge}
+                        </Badge>
+                      </CardContent>
+                    </Card>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Separator */}
+          <div className="mx-auto my-10 w-full max-w-7xl px-4 md:px-6">
+            <Separator />
+          </div>
+
+          {/* Sites */}
+          <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
+            <div className="reveal mb-6 flex items-center gap-3" data-reveal>
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-500">
+                <Globe size={18} />
+              </div>
+              <h3 className="text-lg font-semibold">Sites & Portfólio</h3>
+              <Badge variant="secondary" className="rounded-full text-xs">{websiteProjects.length}</Badge>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {websiteProjects.map((project, index) => (
+                <a key={project.title} href={project.href} target="_blank" rel="noopener noreferrer" className="group block">
+                  <div className="reveal flex items-center gap-4 rounded-2xl border border-border/60 bg-card/60 p-4 transition-all duration-300 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/5 group-hover:shadow-lg group-hover:shadow-emerald-500/5" data-reveal data-delay={String(index * 60)}>
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500 transition-transform duration-300 group-hover:scale-110">
+                      <Globe size={20} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-foreground">{project.title}</p>
+                      <p className="truncate text-xs text-muted-foreground">{project.text}</p>
+                    </div>
+                    <Badge variant="secondary" className="shrink-0 rounded-full text-[11px]">
+                      {project.badge}
+                    </Badge>
+                  </div>
                 </a>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </section>
 
@@ -611,63 +712,65 @@ function App() {
                 Envie os detalhes do seu projeto e retornamos com o melhor caminho técnico e visual.
               </p>
 
-              <div className="mt-7 space-y-4">
-                <div className="contact-row">
-                  <Envelope size={20} />
-                  <span>contato@gruporaval.com</span>
+              <div className="mt-8 flex flex-col gap-4">
+                <a href="mailto:ravalsistemas@gmail.com" className="group flex items-center gap-4 rounded-2xl border border-blue-500/20 bg-blue-500/5 p-4 transition-all hover:bg-blue-500/10 hover:border-blue-500/30">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-500/20 text-blue-500">
+                    <Envelope size={24} weight="fill" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground group-hover:text-blue-500/80 transition-colors">E-mail</p>
+                    <p className="text-base font-semibold text-foreground md:text-lg">ravalsistemas@gmail.com</p>
+                  </div>
+                </a>
+
+                <a href="https://wa.me/5517999783012" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 transition-all hover:bg-emerald-500/10 hover:border-emerald-500/30">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-500">
+                    <WhatsappLogo size={24} weight="fill" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground group-hover:text-emerald-500/80 transition-colors">WhatsApp</p>
+                    <p className="text-base font-semibold text-foreground md:text-lg">(17) 99978-3012</p>
+                  </div>
+                </a>
+
+                <div className="flex items-center gap-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500/20 text-amber-500">
+                    <MapPin size={24} weight="fill" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Endereço</p>
+                    <p className="text-base font-semibold text-foreground md:text-lg">Avenida 15, 382 - Centro, Guaíra, SP</p>
+                  </div>
                 </div>
-                <div className="contact-row">
-                  <Phone size={20} />
-                  <span>(17) 99999-9999</span>
-                </div>
-                <div className="contact-row">
-                  <MapPin size={20} />
-                  <span>Guaíra, São Paulo - Brasil</span>
-                </div>
+
+                <a href="https://www.instagram.com/grupo_raval" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 rounded-2xl border border-pink-500/20 bg-pink-500/5 p-4 transition-all hover:bg-pink-500/10 hover:border-pink-500/30">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-pink-500/20 text-pink-500">
+                    <InstagramLogo size={24} weight="fill" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground group-hover:text-pink-500/80 transition-colors">Instagram</p>
+                    <p className="text-base font-semibold text-foreground md:text-lg">Grupo RaVal (@grupo_raval)</p>
+                  </div>
+                </a>
               </div>
             </div>
 
-            <Card className="glass-card reveal" data-reveal data-delay="120">
-              <CardHeader>
-                <CardTitle>Fale com a equipe</CardTitle>
-                <CardDescription>Resposta rápida para demandas comerciais e técnicas.</CardDescription>
+            <Card className="glass-card reveal overflow-hidden" data-reveal data-delay="120">
+              <CardHeader className="bg-background/50 backdrop-blur-sm border-b border-border/50">
+                <CardTitle>Nossa localização</CardTitle>
+                <CardDescription>Venha tomar um café com a nossa equipe.</CardDescription>
               </CardHeader>
-              <CardContent>
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="nome">Nome *</Label>
-                      <Input id="nome" name="nome" value={formData.nome} onChange={handleInputChange} />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">E-mail *</Label>
-                      <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} />
-                    </div>
-                  </div>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="telefone">Telefone</Label>
-                      <Input id="telefone" name="telefone" value={formData.telefone} onChange={handleInputChange} />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="empresa">Empresa</Label>
-                      <Input id="empresa" name="empresa" value={formData.empresa} onChange={handleInputChange} />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="mensagem">Mensagem *</Label>
-                    <Textarea
-                      id="mensagem"
-                      name="mensagem"
-                      rows={5}
-                      value={formData.mensagem}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <Button type="submit" className="w-full rounded-full">
-                    Enviar mensagem
-                  </Button>
-                </form>
+              <CardContent className="p-0 bg-muted/20">
+                <iframe
+                  src="https://www.google.com/maps?q=Avenida+15,+382+-+Centro,+Gua%C3%ADra+-+SP,+14790-000&output=embed"
+                  width="100%"
+                  height="380"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Localização do Grupo RaVal em Guaíra, SP"
+                />
               </CardContent>
             </Card>
           </div>
@@ -676,7 +779,7 @@ function App() {
 
       <footer className="border-t border-border/70 bg-background/90">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6">
-          <p>© {new Date().getFullYear()} Grupo RaVal. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} Todos os direitos reservados. Criado por <strong className="font-medium text-foreground">Grupo RaVaL</strong>.</p>
           <Separator orientation="horizontal" className="md:hidden" />
           <p className="inline-flex items-center gap-2">
             <Tag size={16} />
@@ -684,8 +787,6 @@ function App() {
           </p>
         </div>
       </footer>
-
-      <Toaster richColors />
     </div>
   );
 }
